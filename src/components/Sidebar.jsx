@@ -2,6 +2,7 @@ import styles from './Sidebar.module.css';
 import { PencilLine } from 'phosphor-react';
 
 import capaDoPerfil from '../assets/capaDoPerfil.svg';
+import { Avatar } from './Avatar';
 
 export function Sidebar () {
     return (
@@ -13,7 +14,7 @@ export function Sidebar () {
             />
 
             <div className={styles.profile}>
-                <img className={styles.avatar} src="https://github.com/biluadev.png" alt="" />
+                <Avatar hasBorder src="https://github.com/biluadev.png"/>
 
                 <strong>Estevão Bilua</strong>
                 <span>Web Developer</span>
