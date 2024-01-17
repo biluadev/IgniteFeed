@@ -1,26 +1,42 @@
 import styles from "./Post.module.css";
 import { Comment } from "./Comment";
 import { Avatar } from "./Avatar";
-export function Post() {
+
+import { format, formatDistanceToNow } from "date-fns";
+import ptBR from 'date-fns/locale/pt-BR';
+export function Post({ author, publishedAt, content }) {
+    const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'ás' HH:mm'h'", {
+        locale: ptBR,
+    })
+
+    const  publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+        locale: ptBR,
+        addSuffix: true,
+    })
     return (
         <article className={styles.post}>
             <header>
                 <div className={styles.author}>
-                    <Avatar hasBorder={true} src="https://github.com/diego3g.png" />
+                    <Avatar hasBorder={true} src={author.avatarUrl} />
                     <div className={styles.authorInfo}>
-                        <strong>EstevãO Bilua</strong>
-                        <span>Web Developer</span>
+                        <strong>{author.name}</strong>
+                        <span>{author.role}</span>
                     </div>
                 </div>
 
-                <time title="10 de Janeiro às 18:59" dateTime="2024-01-10 18:59:30">Publicado há 1h</time>
+                <time title={publishedDateFormatted} dateTime={publishedAt.toISOString()}>
+                    {publishedDateRelativeToNow}
+                </time>
             </header>
 
             <div className={styles.content}>
-                <p>Fala galera </p>
-                <p>Fala galera Fala galera Fala galera Fala galera Fala galera Fala galera Fala galera Fala galera Fala galera Fala galera </p>
-                <p><a href="">biluadev.cod/developer</a></p>
-                <p><a href="">#novoprojeto #nlw</a></p>
+                {content.map(line => {
+                    if(line.type === 'paragraph') {
+                        return <p>{line.content}</p>;
+                    } else if (line.type === 'link') {
+                        return <p><a href="#">{line.content}</a></p>
+                    }
+                })}
             </div>
 
             <form className={styles.commentForm}>
